@@ -6,13 +6,13 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/04 15:48:21 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/04 16:07:28 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "/Users/vmcclure/school42/wolf/wolf/SDL2/include/SDL.h"
+#include "SDL2/include/SDL.h"
 #include <stdio.h>
 
 #define SCREEN_WIDTH 640
@@ -34,8 +34,12 @@ int main(int argc, char* args[])
   screenSurface = SDL_GetWindowSurface(window);
   SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0x00, 0xFF));
   SDL_UpdateWindowSurface(window);
+  int i;
+  i =1;
+
   SDL_LockSurface(screenSurface);
   SDL_Delay(2000);
+  
   SDL_DestroyWindow(window);
   SDL_Quit();
   return 0;
