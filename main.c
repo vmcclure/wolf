@@ -6,13 +6,13 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/04 14:48:41 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:48:21 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "/Users/vmcclure/school42/wolf/SDL2/include/SDL.h"
+#include "/Users/vmcclure/school42/wolf/wolf/SDL2/include/SDL.h"
 #include <stdio.h>
 
 #define SCREEN_WIDTH 640
