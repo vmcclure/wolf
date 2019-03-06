@@ -1,16 +1,18 @@
 NAME = wolf
 SRC = main.c
 OUT = *.o
-INC = SDL2/include/
-MINI = -L SDL22/lib -lSDL2
+INC = include/
+MINI = -L lib -lSDL2 -L lib -lSDL2main -L lib -lSDL2-2.0.0
 FLAGS = -Wall -Wextra -Werror -Ofast -std=c99 -lpthread  
 FRAME = -F SDL2/Frameworks -framework SDL2
-all: $(NAME)
-
-$(NAME):
-	gcc -o $(NAME) -I $(INC) $(SRC) $(FRAME)
+DIRECTORY =  $(shell pwd)
+all: 
+	gcc -o $(NAME) -I $(INC) $(SRC) $(MINI)
+sdl:
+	
+	cd SDL2; ./configure --prefix=$(DIRECTORY);make; make install
 clean:
 	rm -f $(OUT)
 fclean:	clean
-	rm -f $(NAME)
+	rm -rf $(NAME) lib bin share include
 re: 	fclean all

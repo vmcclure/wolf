@@ -6,13 +6,13 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/06 14:55:36 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/06 15:48:57 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "SDL2/include/SDL.h"
+#include "include/SDL2/SDL.h"
 #include <stdio.h>
 
 #define SCREEN_WIDTH 640
