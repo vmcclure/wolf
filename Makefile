@@ -10,7 +10,7 @@ all:
 	gcc -o $(NAME) -I $(INC) $(SRC) $(MINI)
 sdl:
 	
-	cd SDL2; ./configure --prefix=$(DIRECTORY);make; make install
+	cd SDL2; ./configure --prefix=$(DIRECTORY);make; $(MAKE) -sC $(DIRECTORY)/SDL2 install
 clean:
 	rm -f $(OUT)
 fclean:	clean
