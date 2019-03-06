@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/06 15:48:57 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/06 17:46:49 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 #include "include/SDL2/SDL.h"
 #include <stdio.h>
-
+#include "libft/libft.h"
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 int main(int argc, char* args[])
 {
+  printf("%zu",ft_strlen("ad"));
   SDL_Window* window;
   SDL_Surface* screenSurface;
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
