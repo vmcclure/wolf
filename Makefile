@@ -15,5 +15,5 @@ clean:
 fclean:	clean
 	rm -rf $(NAME) lib bin share include cd
 cleansdl:
-	cd SDL2 rm -rf build 
+	cd SDL2; rm -rf build rm config.status rm libtool rm sdl2-config rm Makefile rm Makefile.rules sdl2-config.cmake sdl2.pc SDL2.spec
 re: 	fclean cleansdl sdl all
