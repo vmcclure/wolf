@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/06 17:46:49 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/06 19:48:30 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,42 @@
 #include "libft/libft.h"
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
-int main(int argc, char* args[])
-{
-  printf("%zu",ft_strlen("ad"));
-  SDL_Window* window;
-  SDL_Surface* screenSurface;
-  if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-    fprintf(stderr, "could not initialize sdl2: %s\n", SDL_GetError());
-    return 1;
-  }
-  window = SDL_CreateWindow("hello_sdl2",100, 100,
-			    SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-  if (window == NULL) {
-    fprintf(stderr, "could not create window: %s\n", SDL_GetError());
-    return 1;
-  }
-  screenSurface = SDL_GetWindowSurface(window);
-  SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0x00, 0xFF));
-  SDL_UpdateWindowSurface(window);
-  int i;
-  i =1;
+int main(int argc, char *argv[]) {
+    SDL_Window *win = NULL;
+	SDL_Event event;
+	int i;
+	i= 0;
+    SDL_Texture *texture;
+    SDL_Renderer *renderer = NULL;
+    SDL_Texture *bitmapTex = NULL;
+    SDL_Surface *bitmapSurface = NULL;
+    int posX = 1000, posY = 500, width = 320, height = 240;
 
-  SDL_LockSurface(screenSurface);
-  SDL_Delay(2000);
-  
-  SDL_DestroyWindow(window);
-  SDL_Quit();
-  return 0;
+    SDL_Init(SDL_INIT_VIDEO);
+
+     win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
+
+     renderer = SDL_CreateRenderer(win, 0, SDL_RENDERER_ACCELERATED);
+    
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
+        SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		
+		while ( i++ < height)
+					SDL_RenderDrawPoint(renderer, i, i);      
+        SDL_RenderPresent(renderer);
+
+		while (1) {
+			
+     	   if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+      	      break;
+   		 }
+   
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(win);
+
+    SDL_Quit();
+
+    return 0;
 }
