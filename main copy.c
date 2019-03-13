@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main copy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/13 20:24:17 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:23:10 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,24 @@
 
 void render(int x, int y, int **map, int camx, int camy, SDL_Window *win, int x00, int y00, int pov, double newx, double newy)
 {
-	double lineheght[601];
+
 	int sx;
 	int sy;
 	float i;
 	int y1;
 	int x1;
-	double startx;
-	double starty;
 	double rayx;
 	double rayy;
 	rayx = 0;
 	rayy = 0;
 	//int pov;
-	double fov;
+	int fov;
 	//pov =0;
 	fov = 60;
 	double dirx;
 	double diry;
 	double angle;
 	int stope;
-	double distance[601];
 	stope = 0;
 	//angle = pov - (fov/2);
 	newx += cos(angle* M_PI/180 );
@@ -75,7 +72,7 @@ void render(int x, int y, int **map, int camx, int camy, SDL_Window *win, int x0
 				while (i < sx)
 				{
 					e = 0;
-					while (e < sy)
+					while (e < sx)
 					{
 					SDL_RenderDrawPoint(renderer, x1*sx+i, y1*sy +e);
 					  
@@ -100,25 +97,17 @@ void render(int x, int y, int **map, int camx, int camy, SDL_Window *win, int x0
 			}
 			i++;
 		}
-		e = 0;
-		i = 0;
+		i = -45;
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		while (i < 60)
+		while (i < 46)
 		{
 			rayx = 0;
 			rayy= 0;
-			//pov = pov +i;
-			// if ((pov +i) - (fov/2) > 360)
-			// 	pov -= 360;
-			// if ((pov +i) - (fov/2)< 0)
-			// 	pov += 360;
-			angle = (pov +i) - (fov/2);
+			angle = (pov+i) - (fov/2);
 			dirx = rayx + cos(angle* M_PI/180 );
 			diry = rayy + sin(angle* M_PI/180);
 			rayx = (camx*sx)+x00;
 			rayy = (camy*sx)+y00;
-			startx = rayx;
-			starty = rayy;
 			while ((int)rayx/sx < x && (int)rayy/sx < y && (map[((int)(rayy))/sy][((int)(rayx))/sx] != 1))
 			{
 				
@@ -127,34 +116,10 @@ void render(int x, int y, int **map, int camx, int camy, SDL_Window *win, int x0
 					rayx +=dirx;
 					rayy += diry;				
 			}
-			
-			distance[e] = (pow(pow((rayx - startx) , 2)+ pow((rayy - starty),2),0.5));
-			distance[e] *= cos ((i-30)*M_PI/180) ;
-			lineheght[e] = 10000/distance[e];
-			e++;
-			i+=0.1;
-			//printf("%f\n", lineheght[0]);
+			i+= 1;
+		//	printf("%d", i);
 		}
-		x1 = 0;
-		y1 = 0;
-		i = 0;
-		e = 0;
-		printf ("%f\n",cos (angle*M_PI/180));
-		printf("%f\n", lineheght[0]);
-		printf("%f\n",distance[(int)i]);
-		//SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		while (e < 600)
-		{	
-			y1 = 0;
-			while (y1 < lineheght[e])
-			{
-				SDL_SetRenderDrawColor(renderer,lineheght[e]/2 , 0, lineheght[e]/4, 255);
-				SDL_RenderDrawPoint(renderer, e, 600-y1);
-				y1++;
-			}
-			e++;
-		}
-		
+		//
         SDL_RenderPresent(renderer);
 
 		while (1) {
@@ -192,10 +157,6 @@ void render(int x, int y, int **map, int camx, int camy, SDL_Window *win, int x0
 				if(event.key.keysym.sym == SDLK_d)
 				{
 					pov += 1;
-					// if (pov > 360)
-					// 	pov -= 360;
-					// if (pov < 0)
-					// 	pov += 360;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_a)
@@ -313,7 +274,64 @@ int main(int c, char *v[]) {
      win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
 	 camx = 5;
 		camy = 5;
-	render(x, y, map, camx, camy, win, 0 , 0, 0, 0, 0);
+	render(x, y, map, camx, camy, win, 0 , 0, 30, 0, 0);
+	//mlx_hook(win, 2, 0, tkey);
+    //  renderer = SDL_CreateRenderer(win, 0, SDL_RENDERER_ACCELERATED);
+    
+	// 	sx = width/(x);
+	// 	sy = height/(y);
+    //     SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
+    //     SDL_RenderClear(renderer);
+	// 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	// 	i =0;
+	// 	y1 = 0;
+	// 	int e;
+	// 	while ( y1 < y)
+	// 	{
+	// 		x1 = 0;
+	// 		while (x1 < x)
+	// 		{
+	// 			if (map[y1][x1] == 1)
+	// 			i = 0;
+	// 			while (i < sx)
+	// 			{
+	// 				e = 0;
+	// 				while (e < sx)
+	// 				{
+	// 				SDL_RenderDrawPoint(renderer, x1*sx+i, y1*sy +e);
+					  
+	// 				e++;
+	// 				}
+	// 				i++;
+	// 			} 
+	// 				x1++;
+	// 		}   
+	// 		y1++;
+	// 	}
+	// 	SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+	// 	camx = 8;
+	// 	camy = 9;
+	// 	i = 0;
+	// 	while (i < sx)
+	// 	{
+	// 		e =0;
+	// 		while (e < sx)
+	// 		{
+	// 			SDL_RenderDrawPoint(renderer, camx*sx+i, camy*sy+e);
+	// 			e++;
+	// 		}
+	// 		i++;
+	// 	}
+		
+    //     SDL_RenderPresent(renderer);
+
+	// 	while (1) {
+			
+    //  	   if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+    //   	      break;
+   	// 	 }
+   
+    // SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
 
     SDL_Quit();
