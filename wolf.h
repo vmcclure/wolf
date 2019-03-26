@@ -16,6 +16,7 @@ typedef struct      s_bmpheader
 
 typedef struct s_texture
 {
+	int	fail;
 	int	width;
     int height;
 	unsigned char *pixels;
