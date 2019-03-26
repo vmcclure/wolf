@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/26 21:28:26 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/26 21:36:56 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		int xp;
 		while (e < 600)
 		{	
-			if (v >= (dat.width * 3))
+			if (v >= (dat.width))
 				v = 0;
 
 					
