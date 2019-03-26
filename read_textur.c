@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 15:21:51 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/26 15:57:15 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/26 20:33:11 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_texture			readbmp(char *filename)
 	read(fd, texture.pixels, texture.hdbmp.a[16] * texture.width *
 	texture.height);
 	close(fd);
+	printf ("%d\n", texture.hdbmp.bfSize);
 	texture.fail = 1;
 	return (texture);
 }
