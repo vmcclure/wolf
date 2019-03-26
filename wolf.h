@@ -1,11 +1,7 @@
 #ifndef WOLF_H
 # define WOLF_H
 
-typedef struct s_hero
-{
-    int x;
-    int y;
-}               t_hero;
+
 
 typedef struct      s_bmpheader
 {
@@ -18,8 +14,14 @@ typedef struct      s_bmpheader
     char            a[42];
 }           t_bmphead;
 
-typedef struct s_data
+typedef struct s_texture
 {
-    char data[1900*1200*3];
-}               t_data;
+	int	width;
+    int height;
+	unsigned char *pixels;
+	int bpp;
+	t_bmphead hdbmp;
+}               t_texture;
+
+t_texture readbmp(char* filename);
 #endif

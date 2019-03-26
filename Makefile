@@ -1,5 +1,5 @@
 NAME = wolf
-SRC = main.c
+SRC = main.c read_textur.c 
 OUT = *.o
 INC = include/ -I libft
 MINI = -L lib -lSDL2 -L lib -lSDL2main -L lib -lSDL2-2.0.0 libft/libft.a

@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/25 18:57:20 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/26 15:27:48 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,54 +16,31 @@
 #include "wolf.h"
 #include <math.h>
 #include "libft/libft.h"
-unsigned char *readBMP(char* filename)
-{
-	t_bmphead hdBMP;
-	int i;
-	int fd;
-	int l;
-	int width;
-	int height;
-	FILE* f;
-	if((f = fopen(filename,"rb")) == NULL)
-		return 0;
-	
-	fread(&hdBMP,sizeof(hdBMP),1,f);
-	
-	printf("%c%c\n",hdBMP.b1, hdBMP.b2);
-	printf("%d\n",hdBMP.bfSize);
-	printf("%d\n",hdBMP.bfReserved1);
-	printf("%d\n",hdBMP.bfReserved2);
-	printf("%d\n",hdBMP.bfOffBits);
-	
-	//return 0;
+// t_texture readBMP(char* filename)
+// {
+// 	t_texture texture;
+// 	int i;
+// 	int fd;
+// 	unsigned char info;
+// 	i = 0;
 
-    fd = open(filename, O_RDONLY);
-    unsigned char info[hdBMP.bfOffBits];
-    i = read(fd, info, hdBMP.bfOffBits); // read the 54-byte header
-	
-	// printf("%d\n",i);
-
-	width = 0;
-	
-
-	//int height = hdBMP.a[10];
-    // extract image height and width from header
-    width = *(int*)&hdBMP.a[6];
-    height = *(int *)&hdBMP.a[10];
-	 printf ("%d\n", width);
-	  printf ("%d\n", height);
-
-     int size = 3* width * height;
-	unsigned  char *data;
-	data = malloc (size);
-//    // unsigned char data[size];//= new unsigned char[size]; // allocate 3 bytes per pixel
-     l =read(fd , data, size); // read the rest of the data at once
-// printf ("%d\n", l);
-//  printf ("%d", size);
+// 	fd = open(filename, O_RDONLY);
+// 	read(fd, &texture.hdBMP, 54);
+//  	texture.width = *(int*)&texture.hdBMP.a[6];
+//     texture.height = *(int *)&texture.hdBMP.a[10];
+// 	texture.bpp = texture.hdBMP.a[16];
+// 	close(fd);
+//     fd = open(filename, O_RDONLY);
+// 	while (i <  texture.hdBMP.bfOffBits)
+// 	{
+// 		read(fd, &info, 1);
+// 		i++;
+// 	}
+// 	texture.pixels = (unsigned char *)malloc (texture.hdBMP.a[16]* texture.width * texture.height);
+//     read(fd , texture.pixels, texture.hdBMP.a[16] * texture.width * texture.height);
 //     close(fd);
-return data;
-}
+// return texture;
+// }
 void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, double x00, int y00, double pov, double newx, double newy)
 {
 	double lineheght[601];
@@ -97,8 +74,9 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 	float distance[601];
 	float c;
 			c = 0;
-	
-	data = readBMP("2.bmp");
+	t_texture dat;
+	dat = readbmp("2.bmp");
+	data = dat.pixels;
 	camx=camx+(cos((pov)* M_PI/180.0));//*x00;
 	camy=camy+(sin((pov)* M_PI/180.0));//*x00;
     SDL_Renderer *renderer = NULL;
@@ -176,11 +154,21 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			 }
 			 while (map[(int)y5/sy][(int)x5/sx] == 1)
 			 {
-				c -= 0.001;
+				c -= 0.0001;
 				x5 = camx+c*(cosl((pov +i)* M_PI/180));
 			 	y5 = camy+c* (sinl((pov +i)* M_PI/180));
 				 
 			 }
+			 
+			 
+			  c +=0.0001;
+			//   while (map[(int)y5/sy][(int)x5/sx] != 1)
+			//  {
+			// 	c += 0.00001;
+			// 	x5 = camx+c*(cosl((pov +i)* M_PI/180));
+			//  	y5 = camy+c* (sinl((pov +i)* M_PI/180));
+				 
+			//  }
 			 lineheght[e] = roundl(6000.0/ (c * cos((i)*M_PI/180.0)));
 			
 			e++;
@@ -208,10 +196,18 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		SDL_Rect pos;
 		pos.x = 0;
 		pos.y = 0;
-		r = data[2+ (int)x00]+4;
-		g = data[1 + (int)x00+4];
-		b = data[0 + (int)x00+4];
-		//printf ("%f\n", x00);
+
+		int dd;
+		dd =0;
+		dd = 64*3* y00;
+		r = data[2+ (int)x00+dd];
+		g = data[1 + (int)x00+dd];
+		b = data[0 + (int)x00+dd];
+		// printf ("%d\n", r);
+		// printf ("%d\n", g);
+		// printf ("%d\n", b);
+		// printf ("%d\n", (int)x00/3);
+		// printf ("%d\n", (int)y00);
 		pos.w = 200;
 		pos.h = 200;
 		
@@ -247,32 +243,32 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			SDL_DestroyRenderer(renderer);
    				if(event.key.keysym.sym == SDLK_w)
 				{
-					x00 = 2;
+					x00 = 5;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_s)
 				{
-					x00 = -2;
+					x00 = -5;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_RIGHT)
 				{
-					x00 += 12;
+					x00 += 3;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_LEFT)
 				{
-					x00 -= 12;
+					x00 -= 3;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
     			if(event.key.keysym.sym == SDLK_UP)
 				{
-					y00 -= 1;
+					y00 += 1;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_DOWN)
 				{
-					y00 += 1;
+					y00 -= 1;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_d)
@@ -317,7 +313,7 @@ int main(int c, char *v[])
 	int y1;
 	y1 = 0;
 	int **map;
-	t_hero hero;
+	
 	float camx;
 	float camy;
 	int pov;
