@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/26 21:36:56 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:34:04 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 	SDL_Texture *texture;
 	float distance[601];
 	float c;
+	int kub[601];
 			c = 0;
 	t_texture dat;
 	dat = readbmp("2.bmp");
@@ -100,19 +101,22 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		}
 
 		i = -sx/2;
-		while (i < sy/2)
-		{
-			e = -sx/2;
-			while (e < sx/2)
-			{
-				SDL_RenderDrawPoint(renderer, camx*sx+i+x00, camy*sx+e+y00);
-				e++;
-			}
-			i++;
-		}
+		// while (i < sy/2)
+		// {
+		// 	e = -sx/2;
+		// 	while (e < sx/2)
+		// 	{
+		// 		//SDL_RenderDrawPoint(renderer, camx*sx+i+x00, camy*sx+e+y00);
+		// 		e++;
+		// 	}
+		// 	i++;
+		// }
 		e = 0;
 		i = -30;
-		
+		int x6;
+		int y6;
+		int f;
+		f = 1;
 		SDL_SetRenderDrawColor(renderer, 0, 100, 0, 255);
 			while (i < 30)
 		{
@@ -123,7 +127,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			 	x5 = camx+c*(cosl((pov +i)* M_PI/180));
 			 	y5 = camy+c* (sinl((pov +i)* M_PI/180));
 			 	
-			SDL_RenderDrawPoint(renderer, (x5), (y5));
+			//SDL_RenderDrawPoint(renderer, (x5), (y5));
 			 	if (map[(int)y5/sy][(int)x5/sx] == 1)
 			 		break;
 					 c +=0.5;
@@ -135,9 +139,23 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			 	y5 = camy+c* (sinl((pov +i)* M_PI/180));
 				 
 			 }
-			 
-			 
-			  c +=0.0001;
+			 if (i == - 30)
+			 {
+				 x6 = (int)x5/sx;
+				 y6 = (int)y5/sy;
+			 }
+			if (x6 == (int)x5/sx && y6 ==(int)y5/sy)
+			 	{
+					kub[e] = f;
+				}
+			else 
+			{
+				x6 = (int)x5/sx;
+				 y6 = (int)y5/sy;
+				f++;
+				kub[e] = f;
+			}
+			//printf ("%d\n", kub[e]);
 			//   while (map[(int)y5/sy][(int)x5/sx] != 1)
 			//  {
 			// 	c += 0.00001;
@@ -155,21 +173,36 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		y1 = 0;
 		i = 0;
 		e = 0;
-
-		// SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+		f = 1;
+				// SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 		int dd;
 		int shag;
 		shag = dat.bpp/8;
 		float k;
-		int m;
+		float m;
 		int v;
 		v = 0;
 		int yp;
+		double len;
+		len = -1;
 		int z;
 		int xp;
+		i = 0;
 		while (e < 600)
 		{	
-			if (v >= (dat.width))
+			if (e > i)
+			{
+				len = 0;
+				while (kub[(int)i] == f)
+				{
+					len++;
+					i++;
+				}
+				printf("%f\n", len);
+				f++;
+			}
+			
+			if (v >= len)
 				v = 0;
 
 					
@@ -177,19 +210,20 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			while (y1 < (lineheght[e]))
 			{
 				k = lineheght[e]/dat.height;
-				k = y1/(k);
+				m = len / dat.height;
+				//k = y1/(k);
 				// if (lineheght[e] < dat.height)
 				// 	k =64.0/lineheght[e];
-				yp = (dat.width*3*(int)k);
-				xp = (v * 3) ;
+				yp = (dat.width*3*(int)(y1/k));
+				xp = (int)(v/m) *3 ; //(int)(v/(lineheght[e-v/20]/dat.height)) *3 ; 
 				// printf("k - %f\n", k);
 				// printf("height - %d\n", dat.height);
 				// printf("y1 - %d\n", y1);
 				// printf("y pos - %d\n", yp);
 				// printf("x pos - %d\n", v);
-				r = data[xp + yp + 2];
-				g = data[xp + yp + 1];
-				b = data[xp + yp + 0];
+				r = data[xp + yp + 2 ];
+				g = data[xp + yp + 1 ];
+				b = data[xp + yp + 0] ;
 				SDL_SetRenderDrawColor(renderer, r , g, b, 255);
 				// SDL_RenderDrawPoint (renderer, 400+x00/shag, 400+dat.height-y00);
 
@@ -201,7 +235,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			v++;
 			e++;
 		}
-		printf ("%d",yp + (64*3));
+		//printf ("%d",yp + (64*3));
 		SDL_Rect pos;
 		pos.x = 0;
 		pos.y = 0;
@@ -225,12 +259,12 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			while (x00 < dat.width*shag)
 			{	
 				l = 2;
-				dd = dat.width*shag* (y00/5);
+				dd = dat.width*shag* (y00);
 				r = data[2+ (int)x00+dd];
 				g = data[1 + (int)x00+dd];
 				b = data[0 + (int)x00+dd];
-				SDL_SetRenderDrawColor(renderer, r , g, b, 255);
-				SDL_RenderDrawPoint (renderer, 400+x00/shag, 400+y00);
+				// SDL_SetRenderDrawColor(renderer, r , g, b, 255);
+				// SDL_RenderDrawPoint (renderer, 400+x00/shag, 400+y00);
 				x00+=shag;
 			}
 			y00++;
@@ -240,7 +274,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				
 		
 		
-		SDL_RenderCopy(renderer, bmp1, NULL, &pos);
+		//SDL_RenderCopy(renderer, bmp1, NULL, &pos);
         SDL_RenderPresent(renderer);
 	//printf("%d",sx);
 		while (1) {
@@ -257,11 +291,13 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			SDL_DestroyRenderer(renderer);
    				if(event.key.keysym.sym == SDLK_w)
 				{
+					newx += 5;
 					x00 = 5;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
 				if(event.key.keysym.sym == SDLK_s)
 				{
+					newx -= 5;
 					x00 = -5;
 					render(x, y, map, camx, camy, win, x00, y00, pov, newx, newy);
 				}
