@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:40:52 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/03/31 20:13:14 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/02 19:23:44 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,30 @@
 #include <math.h>
 #include "libft/libft.h"
 
+int napravlenie1(float x, float y, float playerx, float playery, int last_step)
+{
+	int napravlenie;
+	
+	napravlenie = 0;
+	if (playerx  > x && last_step == 1)
+		napravlenie = 1;
+	if (playerx < x && last_step == 1)
+		napravlenie = 2;
+	if (playery  < y && last_step == 2)
+		napravlenie = 3;
+	if (playery  > y && last_step == 2)
+		napravlenie = 4;	
+	return (napravlenie);
+}
+
 void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, double x00, int y00, double pov, double newx, double newy)
 {
+	int z;
+	z = 0;
 	double lineheght[601];
 	int sx;
 	int sy;
+	int maxf;
 	float i;
 	int d[601];
 	int y1;
@@ -53,7 +72,9 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 	float distance[601];
 	float c;
 	int kub[601];
+	int raznica;
 	int sizeblock[601];
+	int last_step;
 			c = 0;
 	t_texture dat;
 	t_texture dat1;
@@ -75,7 +96,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
     int posX = 1000, posY = 500, width = 600, height = 600;
 	SDL_Event event;
 	SDL_Texture *bmp1;
-	surface = SDL_LoadBMP("2.BMP");
+	surface = SDL_LoadBMP("3.BMP");
 	bmp2 = SDL_LoadBMP("2.BMP");
 	renderer = SDL_CreateRenderer(win, 0, SDL_RENDERER_ACCELERATED);
 	bmp1 = SDL_CreateTextureFromSurface(renderer, surface);
@@ -141,47 +162,60 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		{
 					
 			c = 0;
+			y5 = camy+c* (sinl((pov +i)* M_PI/180));
 			 while (c < 1000)
 			 {
 			 	x5 = camx+c*(cosl((pov +i)* M_PI/180));
+				if (map[(int)y5/sy][(int)x5/sx] == 1 || map[(int)y5/sy][(int)x5/sx] == 2)
+			 		{
+						 last_step = 1;
+						//  printf ("x");
+						 break;
+						 
+					 }
 			 	y5 = camy+c* (sinl((pov +i)* M_PI/180));
+			 	if(map[(int)y5/sy][(int)x5/sx] == 1 || map[(int)y5/sy][(int)x5/sx] == 2)
+			 		{
+						 last_step = 2;
+						//  printf ("y");
+						 break;
+					 
+					 }
+			 SDL_RenderDrawPoint(renderer, (x5), (y5));
 			 	
-			// SDL_RenderDrawPoint(renderer, (x5), (y5));
-			 	if (map[(int)y5/sy][(int)x5/sx] == 1 || map[(int)y5/sy][(int)x5/sx] == 2)
-			 		break;
-					 c +=0.5;
+					 c +=1;
 			 }
 			
 			 while (map[(int)y5/sy][(int)x5/sx] == 1 || map[(int)y5/sy][(int)x5/sx] == 2)
 			 {
-				c -= 0.0001;
+				c -= 0.01;
 				x5 = camx+c*(cosl((pov +i)* M_PI/180));
 			 	y5 = camy+c* (sinl((pov +i)* M_PI/180));
 				 
 			 }
 			if (i == -30.0)
 			{				
-				starty = y5/(float)sx - (int)(y5/(float)sx);
-				startx = (x5/(float)sx - (int)(x5/(float)sx));
-				if (startx  > 0.99 && starty > 0.01 && starty < 0.99)
+					starty = y5/(float)sx - (int)(y5/(float)sx);
+					startx = (x5/(float)sx - (int)(x5/(float)sx));
+				if (camx/sx  > x5/sx && starty > 0.001 && starty < 0.999)
 					{						
-						start = (y5/(float)sx - (int)(y5/(float)sx));
-						printf("zapad\n");	
-					}
-				if (startx  < 0.01 && starty > 0.01 && starty < 0.99)
-					{
-						printf("vostok\n");
 						start = 1-(y5/(float)sx - (int)(y5/(float)sx));
+						//printf("zapad\n");	
 					}
-				if (starty  < 0.01 && startx > 0.01 && startx < 0.99)
+				if (camx/sx  < x5/sx && starty > 0.001 && starty < 0.999)
 					{
-						printf("yg\n");
-						start = x5/(float)sx - (int)(x5/(float)sx);
+						//printf("vostok\n");
+						start = (y5/(float)sx - (int)(y5/(float)sx));
 					}
-				if (starty  > 0.99 && startx > 0.01 && startx < 0.99)
+				if (camy/sy  < y5/sy && startx > 0.001 && startx < 0.999)
 					{
-						printf("sever\n");
+						//printf("yg\n");
 						start = 1-(x5/(float)sx - (int)(x5/(float)sx));
+					}
+				if (camy/sy  > y5/sy && startx > 0.001 && startx < 0.999)
+					{
+						//printf("sever\n");
+						start = (x5/(float)sx - (int)(x5/(float)sx));
 					}
 			
 
@@ -190,14 +224,23 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 			 				
 			starty = y5/(float)sx - (int)(y5/(float)sx);
 			startx = (x5/(float)sx - (int)(x5/(float)sx));
-			if (startx  > 0.99 && starty > 0.001 && starty < 0.999)
-				napravlenie[e] = 1;
-			if (startx  < 0.01 && starty > 0.001 && starty < 0.999)
-				napravlenie[e] = 2;
-			if (starty  < 0.01 && startx > 0.001 && startx < 0.999)
-				napravlenie[e] = 3;
-			if (starty  > 0.99 && startx > 0.001 && startx < 0.999)
-				napravlenie[e] = 4;
+			
+			napravlenie[e] = napravlenie1(x5/sx, y5/sy, camx/sx, camy/sy, last_step);
+			//printf ("%d\n", napravlenie[e]);
+			// if (napravlenie[e] == 0)
+			// {
+			// 	napravlenie[e] = 1;
+			// }
+			// if (camx/sx  < x5/sx && starty > 0.001 && starty < 0.999)
+			// 	napravlenie[e] = 2;
+			// if (camy/sy  < y5/sy && startx > 0.001 && startx < 0.999)
+			// 	napravlenie[e] = 3;
+			// if (camy/sy  > y5/sy && startx > 0.001 && startx < 0.999)
+			// 	napravlenie[e] = 4;
+			
+			// if (e < 2 && napravlenie[e] == napravlenie[e-2])
+			// 	napravlenie[e-1] = napravlenie[e];
+			
 				//start =  (y5/(float)sx - (int)(y5/(float)sx));
 			// if (i == 29.9)
 			// 	end = (y5/(float)sx - (int)(y5/(float)sx));
@@ -208,7 +251,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				 y6 = (int)y5/sy;
 				 sizeblock[f] = 0;				 
 			 }
-			if (x6 == (int)(x5/sx) && y6 ==(int)(y5/sy))
+			if (x6 == (int)(x5/sx) && y6 ==(int)(y5/sy) && (e == 0 || napravlenie[e] == napravlenie[e-1] ))
 			 	{
 					sizeblock[f] += 1;
 				}
@@ -217,11 +260,12 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				x6 = (x5/sx);
 				y6 = (y5/sy);
 				sizeblock[f] ++;
-				//printf("%d\n",sizeblock[f]);
+				// printf("%d-",f);
+				// printf("%d\n",sizeblock[f]);
 				f++;
 				sizeblock[f] = 0;
 			}
-		
+			
 			//   while (map[(int)y5/sy][(int)x5/sx] != 1)
 			//  {
 			// 	c += 0.00001;
@@ -230,26 +274,40 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				 
 			//  }
 			 lineheght[e] = roundl(6000.0/ (c * cos((i)*M_PI/180.0)));
-			
+			if (e != 0 && napravlenie[e] != napravlenie[e-1])
+			{
+				raznica = lineheght[e-sizeblock[f-1]] - lineheght[e-1];
+				printf ("raznica  %d\n", f);
+				// i = 0;
+				//  while (z < sizeblock[f-1])
+				// {
+
+				// 	z++;
+				// }
+			 }
 			e++;
 			i = i + 0.1;
 
 		}
+		// printf("\n");
 		float endx;
 		float endy;
+		// printf("%d-",f);
+		// 		printf("%d\n",sizeblock[f]);
 		endy = y5/(float)sx - (int)(y5/(float)sx);
 		endx = (x5/(float)sx - (int)(x5/(float)sx));
-			
+			// printf("\n");
 		e = 0;
 		end = (y5/(float)sx - (int)(y5/(float)sx));
-		if (endx  > 0.99)
+		if (camx/sx  < x5/sx && endy > 0.001 && endy < 0.999)
 					end = (y5/(float)sx - (int)(y5/(float)sx));
-		if (endx  < 0.0001)
+		if (camx/sx  > x5/sx && endy > 0.001 && endy < 0.999)
 					end = 1-(y5/(float)sx - (int)(y5/(float)sx));
-		if (endy  < 0.0001)
+		if (camy/sy  > y5/sy && endx > 0.001 && endx < 0.999)
 					end = x5/(float)sx - (int)(x5/(float)sx);
-		if (endy  > 0.99)
+		if (camy/sy  < y5/sy && endx > 0.001 && endx < 0.999)
 					end = 1-(x5/(float)sx - (int)(x5/(float)sx));
+		
 		//end = (y5/(float)sx - (int)(y5/(float)sx));
 		//printf ("xxxx%d", (int)camx/sx);
 		// if ((int)(x5/sx) >= camx/sx)
@@ -278,10 +336,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		// 		printf("end4%f\n",end);
 		// 		printf("e%d\n",e);
 		// 	}
-		if (end > 1)
-		{
-			end = fabsl(1- (end - 1));
-		}
+		
 		sizeblock[f]= (float)sizeblock[f] / (end);
 		// printf("end%Lf\n",x5/(float)sx);
 		//  printf("\n");
@@ -290,6 +345,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		y1 = 0;
 		i = 0;
 		e = 0;
+		maxf = f;
 		f = 0;
 				// SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 		int dd;
@@ -303,7 +359,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		int yp;
 		double len;
 		len = 0;
-		int z;
+		
 	
 		int xp;
 		i = 0;
@@ -316,6 +372,16 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 		sizeblock[f] = (float)sizeblock[f] / (1-start);;
 		v = start * sizeblock[f];
 		//sizeblockstart = sizeblock[1];
+		// while (f <= maxf)
+		// {
+		// 	raznica = lineheght[e] - lineheght[e+ sizeblock[f]];
+		// 	e = sizeblock[f] + e;
+		// 	f++;
+		// 	printf ("%d\n", raznica);
+		// }
+		e = 0;
+		f = 0;
+		//printf("\n");
 		while (e < 600)
 		{	
 			
@@ -327,7 +393,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				v = 0;
 					//printf ("%f", (float)sizeblock[f]/fabsf(start-1));
 				f++;
-				start = 0;
+				//start = 0;
 			}
 			y1 = 0;
 			while (y1 < (lineheght[e]))
@@ -336,8 +402,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				
 				
 				m = (float)sizeblock[f]/ dat.height;
-				if (start != 0)
-					m = (float)sizeblock[f]/ dat.height;			
+						
 				if (e == 0 && y1==1)
 				{
 					// printf ("startblock%d\n", sizeblock[f]);
@@ -350,7 +415,7 @@ void render(int x, int y, int **map, double camx, double camy, SDL_Window *win, 
 				//k = y1/(k);
 				// if (lineheght[e] < dat.height)
 				// 	k =64.0/lineheght[e];
-				yp = (dat.width*3*(int)(dat.height -1  - y1/k));
+				yp = (dat.width*3*(int)(dat.height - y1/k));
 				xp = ((int)(v/m) *3) ; //(int)(v/(lineheght[e-v/20]/dat.height)) *3 ; 
 					
 				// printf("k - %f\n", k);

@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 19:35:35 by dtreutel          #+#    #+#             */
-/*   Updated: 2019/03/31 15:56:19 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/02 18:57:06 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static int	chek_read_str(char *str)
 static int	chek_split_map(char **map)
 {
 	int	j;
-
-
 
 	j = 0;
 	while (map[++j] != 0)
