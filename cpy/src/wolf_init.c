@@ -6,63 +6,26 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 09:36:04 by dtreutel          #+#    #+#             */
-/*   Updated: 2019/04/07 20:55:29 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/07 22:32:27 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/wolf3d.h"
 #include <stdio.h>
 
-static	void	mnogo_strok(int x, int y, t_texture *text, t_mlx *mlx)
+static void		comnata(t_mlx *mlx)
 {
-	int			k;
+	int			fd;
 
-	if (mlx->anim > 4 || mlx->anim < 0)
-		mlx->anim = 0;
-	k = mlx->anim;
-	if (text[mlx->anim].pixels[x / 2 * 4 + (text[k].height - y / 2 - 1)
-		* text[k].width * 4 + 0] == 255 && text[k].pixels[x / 2 * 4
-		+ (text[k].height - y / 2 - 1) * text[k].width * 4 + 1] == 255
-		&& text[k].pixels[x / 2 * 4 + (text[k].height - y / 2 - 1)
-		* text[k].width * 4 + 2] == 255)
-		x++;
-	else
+	if (get_map(fd = open("maps/map2", O_RDONLY), &mlx->map) <= 0)
 	{
-		mlx->img_data[y * mlx->size_line + ((x + 100) * mlx->bpp / 8)
-		+ 0] = text[k].pixels[(x / 2) * 4 + (text[k].height - (y / 2)
-		- 1) * text[k].width * 4 + 0];
-		mlx->img_data[y * mlx->size_line + ((x + 100) * mlx->bpp / 8)
-		+ 1] = text[k].pixels[(x / 2) * 4 + (text[k].height - (y / 2)
-		- 1) * text[k].width * 4 + 1];
-		mlx->img_data[y * mlx->size_line + ((x + 100) * mlx->bpp / 8)
-		+ 2] = text[k].pixels[(x / 2) * 4 + (text[k].height - (y / 2)
-		- 1) * text[k].width * 4 + 2];
-		x++;
+		ft_putstr("error\n");
+		exit(0);
 	}
-}
-
-static	void	put_pistol(t_mlx *mlx)
-{
-	t_texture	text[5];
-	int			x;
-	int			y;
-
-	text[0] = readbmp("./text/0/shotgun1.bmp");
-	text[1] = readbmp("./text/0/shotgun2.bmp");
-	text[2] = readbmp("./text/0/shotgun3.bmp");
-	text[3] = readbmp("./text/0/shotgun4.bmp");
-	text[4] = readbmp("./text/0/shotgun5.bmp");
-	y = 0;
-	while (y < 800)
-	{
-		x = 0;
-		while (x < 800)
-		{
-			mnogo_strok(x, y, text, mlx);
-			x++;
-		}
-		y++;
-	}
+	close(fd);
+	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
+	mlx->secret = 2;
+	wolf3d(mlx);
 }
 
 static void		floor_ceiling(t_mlx *mlx)
@@ -115,6 +78,8 @@ void			wolf_init(t_mlx *mlx)
 	put_textur(mlx);
 	put_pistol(mlx);
 	minimap(mlx);
+	if (mlx->map[mlx->player.y / SIZE][mlx->player.x / SIZE] == 's')
+		comnata(mlx);
 	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img_ptr, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:54:35 by dtreutel          #+#    #+#             */
-/*   Updated: 2019/04/07 20:50:55 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/07 22:28:14 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct		s_mlx
 	int				x;
 	int				y;
 	int				anim;
+	int				secret;
 	char			**map;
 	int				minimap;
 	t_player		player;
@@ -136,6 +137,7 @@ void				put_line(t_mlx *mlx, t_line line);
 void				set_pxl(char *str, int x, int y, int clr);
 void				*distance_init(t_thredsct *sct);
 void				minimap(t_mlx *mlx);
+void				put_pistol(t_mlx *mlx);
 t_texture			readbmp(char *filename);
 
 #endif

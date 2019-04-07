@@ -29,7 +29,8 @@ RAW_SRCS= main.c\
           distance_init.c\
           read_textur.c\
           put_textur.c\
-		  minimap.c
+		  minimap.c\
+		  pistol.c
 
 RAW_OBJS=$(RAW_SRCS:.c=.o)
 SRCS=$(addprefix $(SRCS_DIR)/,$(RAW_SRCS))

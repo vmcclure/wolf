@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 12:39:33 by dtreutel          #+#    #+#             */
-/*   Updated: 2019/04/07 19:02:31 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/07 22:35:29 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,17 @@ static void		main_while(t_thredsct *sct, t_valdist *val)
 		val->x_map = sct->mlx->player.x + val->step *
 				cos(sct->mlx->player.angle + val->start_rad +
 				(sct->startx * val->radpp));
-		if (sct->mlx->map[(int)val->y_map / SIZE]
-					[(int)val->x_map / SIZE] == '1')
+		if (sct->mlx->map[(int)val->y_map / SIZE][(int)val->x_map / SIZE] == '1'
+		|| sct->mlx->map[(int)val->y_map / SIZE][(int)val->x_map / SIZE] == 's')
 			sct->mlx->rays[sct->startx].ns = 0;
 		if (sct->mlx->rays[sct->startx].ns != 0)
 		{
 			val->y_map = sct->mlx->player.y + val->step *
 					sin(sct->mlx->player.angle + val->start_rad
 					+ (sct->startx * val->radpp));
-			if (sct->mlx->map[(int)val->y_map / SIZE]
-						[(int)val->x_map / SIZE] == '1')
+			if (sct->mlx->map[(int)val->y_map / SIZE][(int)val->x_map / SIZE]
+			== '1' || sct->mlx->map[(int)val->y_map / SIZE][(int)val->x_map /
+			SIZE] == 's')
 				sct->mlx->rays[sct->startx].we = 0;
 		}
 	}

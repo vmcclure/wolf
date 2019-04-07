@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 13:03:38 by dtreutel          #+#    #+#             */
-/*   Updated: 2019/04/07 20:44:16 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/07 22:23:48 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int		main(void)
 	t_mlx	mlx;
 	int		fd;
 
+	mlx.secret = 1;
 	fd = open("maps/map1", O_RDONLY);
 	i = get_map(fd, &mlx.map);
 	close(fd);

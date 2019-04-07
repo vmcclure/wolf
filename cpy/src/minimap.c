@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 20:54:55 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/07 21:20:03 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/07 22:04:17 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,22 @@ static	void	zlivka(t_mlx *mlx, int x, int y, int y1)
 		player = (mlx->player.y / SIZE * 10 + y1) * mlx->size_line
 			+ (mlx->player.x / SIZE * 10 + x1) * 4;
 		i = (y * 10 + y1) * mlx->size_line + (x * 10 + x1) * 4;
+		if (i > 1000000)
+			return ;
 		if (mlx->map[y][x] == '1')
-		{
 			steni_player(player, i, mlx);
-		}
 		else
 		{
 			mlx->img_data[i] = (char)0;
 			mlx->img_data[i + 1] = (char)0;
 			mlx->img_data[i + 2] = (char)0;
 		}
+		if (mlx->map[y][x] == 's')
+			{
+				mlx->img_data[i] = (char)255;
+				mlx->img_data[i + 1] = (char)0;
+				mlx->img_data[i + 2] = (char)0;
+			}
 		x1++;
 	}
 }

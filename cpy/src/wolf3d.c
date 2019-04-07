@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 19:59:57 by dtreutel          #+#    #+#             */
-/*   Updated: 2019/04/07 20:53:24 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/07 22:23:59 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,16 @@ static int	loop_hook(t_mlx *mlx)
 
 void					wolf3d(t_mlx *mlx)
 {
-	mlx->mlx_ptr = mlx_init();
-	mlx->x = 1000;
-	mlx->y = 800;
-	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->x, mlx->y, "wolf3d");
-	mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, mlx->x, mlx->y);
-	mlx->img_data = mlx_get_data_addr(mlx->img_ptr, &mlx->bpp,
+	if (mlx->secret == 1)
+	{
+		mlx->mlx_ptr = mlx_init();
+		mlx->x = 1000;
+		mlx->y = 800;
+		mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, mlx->x, mlx->y, "wolf3d");
+		mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, mlx->x, mlx->y);
+		mlx->img_data = mlx_get_data_addr(mlx->img_ptr, &mlx->bpp,
 			&mlx->size_line, &mlx->end);
+	}
 
 	player_init(mlx);
 	wolf_init(mlx);
